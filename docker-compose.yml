@@ -1,0 +1,49 @@
+version: '2'
+services:
+  app:
+    build: .
+    container_name: App
+    ports: 
+       - "3200:3200"
+    depends_on: 
+       - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydb
+    volumes:
+        - .:/workspace/app/
+        - /workspace/app/node_modules
+    networks:
+      - networkName
+  app1:
+    build: .
+    container_name: App1
+    ports: 
+       - "3300:3200"
+    depends_on: 
+       - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydb
+    volumes:
+        - .:/workspace/app/
+        - /workspace/app/node_modules
+    networks:
+      - networkName
+  
+  mongo:
+    image: mongo:5.0  
+    ports: 
+      - "27017:27017"
+    volumes: 
+      - mongo_data:/data/db
+    networks:
+      - networkName
+        
+volumes:
+      mongo_data:
+
+networks:
+    networkName:
+        driver: bridge
+
+
+

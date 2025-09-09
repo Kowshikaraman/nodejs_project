@@ -28,6 +28,10 @@ export class AdminRoutes{
             }
 
             response.send(resp)
+        });
+
+        AdminRoutes.app.post("/addUsers",async (request:any,response:any)=>{
+            
         })
 
         return AdminRoutes.app
