@@ -1,0 +1,54 @@
+version: '3'
+services:
+  app1:
+    container_name: App1
+    build: .
+    image: my_expressjs_app:0.1
+    ports: 
+      - "3200:3200"
+    volumes:
+      - .:/workspace/app
+      - /workspace/app/node_modules
+    networks:
+      - swarmNetwork
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+  app2:
+    build: .
+    container_name: App2
+    image: my_expressjs_app:0.1
+    ports: 
+      - "3300:3200"
+    volumes:
+      - .:/workspace/app
+      - /workspace/app/node_modules
+    networks:
+      - swarmNetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+  mongo:
+    container_name: mongo
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - swarmNetwork
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+    mongo_data:
+
+networks:
+  swarmNetwork:
+    driver: overlay
+
+  
